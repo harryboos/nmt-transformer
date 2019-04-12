@@ -17,8 +17,9 @@ def padding_mask(source):
 
 # mask for target sentence to prevent exposing answers to decoder
 def single_mask(size):
-    mask = torch.ones((1, size, size))
+    mask = torch.ones((size, size))
     mask = torch.tril(mask)
+    mask = mask.view(1, size, size)
     return mask
 
 # create masks for source and target
