@@ -232,7 +232,7 @@ def pair_to_indexes(pairs, max_len, input_lang, output_lang):
 
 
 save_each = 1
-file = open(“loss.txt”,”w”)
+file = open("loss.txt","w")
 
 
 # dataset: pairs
