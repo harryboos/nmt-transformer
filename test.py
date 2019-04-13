@@ -299,18 +299,18 @@ params['epochs'] = 15
 params['learning_rate'] = 0.001
 
 
-dim_model = 128
-H = 2
-N = 3
+dim_model = 512
+H = 8
+N = 6
 src_vocab = input_lang.n_words
 trg_vocab = output_lang.n_words
 
 model = Transformer(src_vocab, trg_vocab, dim_model, N, H)
 model = model.cuda()
 print(10)
-#data_1 = [element for element in pairs if find_len(element) < 100]
+data_1 = [element for element in pairs if find_len(element) < 100]
 #data_1 = data_1[:2000]
-data_1 = pairs
+#data_1 = pairs
 max_len_1 = find_max_len(data_1) + 2
 source, target = pair_to_indexes(data_1, max_len_1, input_lang, output_lang)
 train_lm(source, target, params, model)

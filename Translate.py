@@ -3,7 +3,7 @@ import torch
 from Text import Lang
 from Text import indexes_from_sentence
 from Text import padding_both
-
+from Model import Transformer
 from Mask import create_masks
 
 def translate_sentence(sent, model, input_lang, output_lang, maxlen):
@@ -32,3 +32,13 @@ def translate_sentence(sent, model, input_lang, output_lang, maxlen):
         result += output_lang.index2word[index]
     print(result)
     return result
+
+print(1)
+t_model = Transformer(*args, **kwargs)
+t_model.load_state_dict(torch.load(models/mytraining8.pt))
+print(2)
+t_model.cuda()
+t_model.eval()
+sent = 'sie kennen die reise der pinguine'
+result = translate_sentence(sent, t_model, 'ger', 'en', 10)
+print(result)

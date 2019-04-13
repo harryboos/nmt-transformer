@@ -124,14 +124,22 @@ def variables_from_pair(pair, input_lang, output_lang):
     return (input_variable, target_variable)
 
 
-
 def find_max_len(pair):
     result = 0
 
     for sents in pair:
         for item in sents:
-            if len(item) > result:
-                result = len(item)
+            if len(item.split()) > result:
+
+                result = len(item.split())
+    return result
+
+
+def find_len(element):
+    result = 0
+    for item in element:
+        if len(item.split()) > result:
+            result = len(item.split())
     return result
 
 
