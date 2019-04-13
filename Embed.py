@@ -14,7 +14,7 @@ class Embedder(nn.Module):
 
 
 class PositionalEncoder(nn.Module):
-    def __init__(self, dim_model, max_seq_dim = 102):
+    def __init__(self, dim_model, max_seq_dim = 625):
         super().__init__()
 
 
