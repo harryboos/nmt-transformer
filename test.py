@@ -264,9 +264,9 @@ def train_lm(sources, targets, params, net):
             target_mask = target_mask.cuda()
             preds = net(source, target, source_mask, target_mask)
 
-            preds = preds.contiguous().view(-1, net.target_vocab)
+            preds = preds[:, :-1, :].contiguous().view(-1, net.target_vocab)
 
-            labels = target.contiguous().view(-1)
+            labels = target[:, 1:].contiguous().view(-1)
 
             loss = criterion(preds, labels.long())
 
@@ -295,11 +295,11 @@ params = {}
 
 
 params['batch_size'] = 64
-params['epochs'] = 15
+params['epochs'] = 30
 params['learning_rate'] = 0.001
 
 
-dim_model = 512
+dim_model = 128
 H = 8
 N = 6
 src_vocab = input_lang.n_words
