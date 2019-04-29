@@ -2,7 +2,7 @@ import torch.nn as nn
 from Normalization import Norm
 from FeedForward import FeedForward
 from Attention import MultiHeadAttention
-import copy
+
 
 
 class EncoderLayer(nn.Module):
@@ -47,17 +47,21 @@ class DecoderLayer(nn.Module):
         self.dropout_1 = nn.Dropout(dropout)
         self.dropout_2 = nn.Dropout(dropout)
         self.dropout_3 = nn.Dropout(dropout)
-
+        # frist multi head attention is for target sentence attention
         self.multi_attention1 = MultiHeadAttention(H, dim_model)
+        # second multi head attention is for output of encoder and target sentence
         self.multi_attention2 = MultiHeadAttention(H, dim_model)
+        # then we send output of them to feed forward layer
         self.ff = FeedForward(dim_model)
 
 
     def forward(self, x, encoder_output, source_mask, target_mask):
 
-
+        # first normalize input
         norm_x_1 = self.norm_1(x)
+        # then get attention score of target sentence with target mask
         attention1 = self.multi_attention1(norm_x_1, norm_x_1, norm_x_1, target_mask)
+        # then we add dropout
         drop1 = self.dropout_1(attention1)
         x = x + drop1
 
@@ -75,8 +79,6 @@ class DecoderLayer(nn.Module):
         return x
 
 
-def get_clones(model, N):
-    return nn.ModuleList([copy.deepcopy(model) for i in range(N)])
 
 
 

@@ -6,10 +6,14 @@ import numpy as np
 from Mask import single_mask
 
 def attention_help(q, k, v, dk, mask=None, dropout=None):
-    # q, k v: batch_size , seq_len , dim_model.
-    # transform k to batch_size , dim_model, seq_len
-    # scores dim: batch_size , seq_len , seq_len
-    scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(dk)
+    # q, k v: [batch_size , seq_len , dim_model].
+    # transform k to [batch_size , dim_model, seq_len]
+    # therefore we got score by multiply q and transformed k
+    # scores dimension: [batch_size , seq_len , seq_len]
+    transformed_k = k.transpose(-2, -1)
+    # dk = dim_model / H
+    scores = torch.matmul(q, transformed_k)
+    scores = scores / math.sqrt(dk)
     if mask is not None:
         # print(mask.size())
         # print('mask, inside: ', mask.size())
@@ -40,6 +44,7 @@ class MultiHeadAttention(nn.Module):
         # dk = dim_model / H
         self.dk = dim_model // H
 
+        # add dropout to prevent overfit
         self.dropout = nn.Dropout(dropout)
 
         self.q_Linear = nn.Linear(dim_model, dim_model)
@@ -54,7 +59,7 @@ class MultiHeadAttention(nn.Module):
         batch_size = q.size(0)
 
         # print('k: ', k.size())
-        # transform to batch_size , H , H , dk
+        # transform to [batch_size , H , H , dk]
         k = self.k_Linear(k).view(batch_size, -1, self.H, self.dk)
         q = self.q_Linear(q).view(batch_size, -1, self.H, self.dk)
         v = self.v_Linear(v).view(batch_size, -1, self.H, self.dk)

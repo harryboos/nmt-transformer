@@ -22,8 +22,9 @@ class Transformer(nn.Module):
 
     def forward(self, source, target, source_mask, target_mask):
         encoder_output = self.encoder(source, source_mask)
-        # print("transformer: ", target.size(), encoder_output.size(), encoder_output.size(), source_mask.size())
+
         decoder_output = self.decoder(target, encoder_output, source_mask, target_mask)
+
         out = self.out(decoder_output)
         return out
 

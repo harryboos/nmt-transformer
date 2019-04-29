@@ -11,7 +11,7 @@ def padding_mask(source):
     pad_mask = source.eq(0).float()
     one_mask = torch.ones(pad_mask.size())
     pad_mask = one_mask - pad_mask
-    pad_mask = pad_mask.unsqueeze(1).expand(-1, seq_len, -1)  # shape [B, L_q, L_k]
+    pad_mask = pad_mask.unsqueeze(1).expand(-1, seq_len, -1)  # shape [batch, l_q, l_k]
     return pad_mask
 
 
