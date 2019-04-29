@@ -330,6 +330,7 @@ def train_lm(data_pairs, params, net):
                 optimizer.step()
                 optimizer.zero_grad()
                 ep_loss += loss.item()
+                torch.cuda.empty_cache()
 
         curr_loss = 'epoch: %d, loss: %0.2f, time: %0.2f sec' % (
             epoch, ep_loss, time.time() - start_time)
